@@ -1,0 +1,176 @@
+
+I have coded this Cache assignment using java.
+I have made three files, one for every part in the assignment.(Direct.java,set1.java,Associative.java)
+
+Assumptions:
+    1)All the inputs should be in power of 2. I have taken main memory size as an input too., and cache size should
+    be less than main memory size.
+    2)For replacement, I have used FIFO method in Associative Mapping and Random in K-set Associative Mapping.
+    3)K can't be 0.(It will give a zero division error)
+    4)Address input by the user should be of desired length, depends on main memory size.(For example: if main memory size
+    is 128bytes then the Address should be of length 7, as 2^7=128).
+    5)After the user inputs Cache size,no.of lines,Block size and main memory size, he will get an
+    option to enter which operation he wants to do, only two operations are there: Read and Write.
+    If the user enters "Read":
+        Input:  He/she has to enter the address.
+        Output: Data on that Address and the cache structure along with tag array.
+    If the user enter "Write":
+        Input: He/she has to enter the address along with a data input which he/she wants to write on
+        the provided address.
+        Output: Tag array and Cache Structure.
+    6)I have taken integer everywhere. So the user can't enter an input more than 2147483647.
+
+Code explaination:
+
+    Main Function:Takes all the inputs stated in the assignment doc.
+
+    Direct.java(Direct Mapping)
+
+        Replacement Method: No specific replacement method.At the time of replacement i have shown the tag bits which 
+        is replaced.
+        In read function(which gets called when the user inputs "Read" as an operation)
+        Direct:
+            This function make 2-D array for cache, and one string type array for tag to keep track of the addresses loaded.
+            for tag to keep track of the addresses loaded.
+        DirectRead:
+            It divides the address in order to do cache mapping and pick out the desired block out of the
+            main memory, for both the division of address is different, and check if the given tag 
+            is present already or not and then returns the data which is on the data provided, along with
+            tag array and cache and cache hit and cache miss count.This function is an Integer type.
+        In Write function(whuch gets called when the user inputs "Write" as an operation)
+        DirectWrite:
+            It divides the data in the same way directRead do and writes the
+            provided data input on the given address both in main memory and Cache. This function is a void type.
+            After this function stops, tag array gets printed along with cache and cache hit and cache miss count.
+
+    Associative.java(Associative Mapping)
+
+        Replacement Method:FIFO.At the time of replacement i have shown the tag bits which is replaced.
+        In read function(which gets called when the user inputs "Read" as an operation)
+        Associative:
+            This function make 2-D array for cache, and one string type array 
+            for tag to keep track of the addresses loaded.
+        In Read function(which gets called when the user inputs "Read" as an operation)
+        AssociativeRead:
+            It divides the address in order to do cache mapping and pick out the desired block out of the
+            main memory, for both the division of address is different, and check if the given tag 
+            is present already or not and then returns and prints the data which is on the data provided
+            and the cache and cache hit and cache miss count.This function is an Integer type.
+        In Write function(whuch gets called when the user inputs "Write" as an operation)
+        AssociativeWrite:
+            It divides the data in the same way directRead do and writes the
+            provided data input on the given address both in main memory and Cache. This function is a void type.
+            After this function stops, tag array gets printed along with cache and cache hit and cache miss count.
+
+    set1.java(K-set associative)
+
+        Replacement Method: Random.At the time of replacement i have shown the tag bits which is replaced.
+        This takes k as input too.
+        Replacement Method: Random(also given in slides)
+        nset:
+            This function make 2-D array for cache, and one string type array 
+            for tag to keep track of the addresses loaded.
+        In Read function(which gets called when the user inputs "Read" as an operation)
+        nsetRead:
+            It divides the address in order to do cache mapping and pick out the desired block out of the
+            main memory, for both the division of address is different, and check if the given tag 
+            is present already or not and then returns and prints the data which is on the data provided.
+            It also prints the tag arrayand cache hit and cache miss count.This function is an Integer type.
+        In Write function(which gets called when the user inputs "Write" as an operation)
+        nsetWrite:
+            It divides the data in the same way directRead do and writes the
+            provided data input on the given address both in main memory and Cache. This function is a void type.
+            After this function stops, cache structure gets printed along with tag array and cache hit and cache miss count.
+
+
+    Common functions used in every code file:
+        print:
+            Prints the cache structure.
+        printTag:
+            Prints the tag of each line of cache.
+        convt:
+            It take binary address as a string return its decimal equiavalent in integer type using Integer.parseInt function.
+
+    Common variables used in every code file:
+        1)cache_hit for count(global variable).
+        2)cache_miss for count(global variable).
+        3)Some boolean type variables for determining the presence of tags in the repective Tag array.
+
+
+
+Bonus assignment:   
+    Language: java
+    File_Name: bonus.java
+    Policy used:NINE(Not inclusive Not exclusive)
+        What this policy states is Consider the case when L2 is non-inclusive non-exclusive of L1. Suppose there is a processor 
+        read request for block X. If the block is found in L1 cache, then the data is read from L1 cache and returned to the 
+        processor. If the block is not found in the L1 cache, but present in the L2 cache, then the cache block is fetched 
+        from the L2 cache and placed in L1. If this causes a block to be evicted from L1, there is no involvement of L2, which 
+        is the same as in the case of inclusive policy. If the block is not found in both L1 and L2, then it is fetched from 
+        main memory and placed in both L1 and L2. Now, if there is an eviction from L2, unlike inclusive policy, there is no 
+        back invalidation. (Reference: https://en.m.wikipedia.org/wiki/Cache_inclusion_policy).
+    Assumptions: 
+        1)All the inputs should be in power of 2. There are two inputs one is the size of L1 cache and other is block size,
+        block size should be << L1cache size. Size of level 2 cache is 2xSize of L1 cache. 
+        2)The code runs on as the policy states. 
+        3)Both the cache's are initialized with 0 in all rows and columns(both are 2D array). 
+        4)If i replace any data on any position in any if the two cach, the previous data that got replace will be lost,
+        as we have been said to make a standalone level2 cache, we can't use main memory.
+        5)Length of address will depend on size of L2 cache(if size of l2 cache is 128bytes then address length will be 7,
+        as 2^7=128).
+        6)Mapping that i have used is all. Block offset bits are calculated using Log base 2 of block size(Same for both caches).
+        and tag bits depends on the size of both cache's, i'e logbase2(size of cache).
+
+    Code explaination: 
+        Replacement Method: Not needed.
+        Function by function explaination:
+            print:
+            Prints the cache structure.
+
+            printTag:
+            Prints the tag of each line of cache.
+
+            convt:
+            It take binary address as a string return its decimal equiavalent in integer type using Integer.parseInt function.
+
+        Main function:
+            This function make two 2-D arrays for main memory and cache, and two string type array 
+            for tag to keep track of the addresses loaded in both of the cache array.It will take all the inputs
+            then ask the user for entering the opeation he/she wants, if it's Read it will tell the user to enter the adress
+            which the user wants to do opeation on and then calls memoryRead function, if the user enters "Write", the user 
+            needs to enter both address and data and Memory read function gets called.
+
+        MemoryRead function:
+            Explained in Nine policy.The checking of the address will start from level1 and then go to level2.
+            If the given address is not found in either of the caches i intialize that row with zero's, and update both the 
+            tag arrays with the new address. if we had used main memory, in that case data would have beenfetched from the main memory.
+        Memory Write Function:
+            Same as read function, The checking of the address will start from level1 and then go to level2,when i find the address 
+            in any of the two cache i write it there without disturbing the other cache. If the given address is not found in 
+            either of the caches i intialize that row with zero's, and update both the tag arrays with the new address.
+
+        Output in both the above function:
+            Both the cache's, both the tag arrays, and data on that address(if it's a read operation).
+
+
+Thank You! I hope you liked it.            
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    
+        
